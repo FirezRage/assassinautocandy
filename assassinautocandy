@@ -1,0 +1,269 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Azonix ✔️️️ | V1.1", HidePremium = false, IntroText = "Welcome To Azonix ",SaveConfig = true, ConfigFolder = "mainConfig"})
+
+--Values
+_G.autotap = true
+_G.autorebirth = true
+_G.autocandy = true
+_G.Disabled = true
+-- Functions
+
+function autotap()
+    while _G.autotap  == true do
+game:GetService("ReplicatedStorage").Remotes.Tap:FireServer()
+wait(.0001)
+    end
+end
+
+function autocandy()
+    while _G.autocandy == true do
+        for i,v in pairs(game:GetService("Workspace").EventCurrency:GetChildren()) do
+            if v:IsA("Part") and v:FindFirstChildOfClass("TouchTransmitter") or v:IsA("MeshPart") and v:FindFirstChildOfClass("TouchTransmitter")  then
+               firetouchinterest(v, workspace[game:GetService("Players").LocalPlayer.Name].Head, 0)
+               firetouchinterest(v, workspace[game:GetService("Players").LocalPlayer.Name].Head, 1) 
+               firetouchinterest(v, workspace[game:GetService("Players").LocalPlayer.Name].Head, 0)
+            end
+        end 
+wait(.0001)
+    end
+end
+
+function autorebirth()
+    while _G.autorebirth  == true do
+game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer(1)
+wait(.0001)
+    end
+end
+
+function Disabled()
+    
+    if _G.Disabled then
+        for i,v in next, game:GetService('Players'):GetPlayers() do
+          if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+            pcall(function()
+            v.Character.Head.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+            v.Character.Head.Transparency = 0.7
+            v.Character.Head.BrickColor = BrickColor.new("Really blue")
+            v.Character.Head.Material = "Neon"
+            v.Character.Head.CanCollide = false
+            end)
+          end
+        end
+        end
+    end
+
+-- HUB TAB
+local hub = Window:MakeTab({
+	Name = "HUB",
+	Icon = "rbxassetid://279461710",
+	PremiumOnly = false
+})
+hub:AddLabel("Azonix")
+hub:AddParagraph("Creator","Ei_xy")
+hub:AddParagraph("Last Updated: ","11/23/22 | V1.1")
+hub:AddParagraph("Discord","Dv34sa")
+
+-- Tabs
+local universal = Window:MakeTab({
+	Name = "Universal",
+	Icon = "rbxassetid://7744394226",
+	PremiumOnly = false
+})
+
+local assassin = Window:MakeTab({
+	Name = "Assassin!",
+	Icon = "rbxassetid://7744394226",
+	PremiumOnly = false
+})
+
+
+-- Sections
+local boostSection = universal:AddSection({
+	Name = "Boosts"
+    
+})
+local apSection = universal:AddSection({
+	Name = "Admin Powers"
+    
+})
+local visualSection = universal:AddSection({
+	Name = "Visuals"
+})
+local assassinSection = assassin:AddSection({
+	Name = "Auto"
+    
+})
+-- Sliders
+boostSection:AddSlider({
+	Name = "Speed",
+	Min = 0,
+	Max = 500,
+	Default = 16,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Walk Speed",
+	Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+	end    
+})
+boostSection:AddSlider({
+	Name = "Jump Power",
+	Min = 0,
+	Max = 350,
+	Default = 50,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Jump Power",
+	Callback = function(Value)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+	end    
+})
+-- Buttons
+apSection:AddButton({
+	Name = "Full bright",
+	Callback = function()
+        local Light = game:GetService("Lighting")
+
+function dofullbright()
+Light.Ambient = Color3.new(1, 1, 1)
+Light.ColorShift_Bottom = Color3.new(1, 1, 1)
+Light.ColorShift_Top = Color3.new(1, 1, 1)
+end
+
+dofullbright()
+
+Light.LightingChanged:Connect(dofullbright)
+
+  	end    
+})
+apSection:AddButton({
+	Name = "Btools",
+	Callback = function()
+        local LocalPlayer = game:GetService("Players").LocalPlayer
+        local mouse = LocalPlayer:GetMouse()
+        local movetool = Instance.new("Tool", LocalPlayer.Backpack)
+        local deletetool = Instance.new("Tool", LocalPlayer.Backpack)
+        local undotool = Instance.new("Tool", LocalPlayer.Backpack)
+        local identifytool = Instance.new("Tool", LocalPlayer.Backpack)
+        local movedetect = false
+        local movingpart = nil
+        local movetransparency = 0
+        if editedparts == nil then
+        editedparts = {}
+        parentfix = {}
+        positionfix = {}
+        end
+        deletetool.Name = "Delete"
+        undotool.Name = "Undo"
+        identifytool.Name = "Identify"
+        movetool.Name = "Move"
+        undotool.CanBeDropped = false
+        deletetool.CanBeDropped = false
+        identifytool.CanBeDropped = false
+        movetool.CanBeDropped = false
+        undotool.RequiresHandle = false
+        deletetool.RequiresHandle = false
+        identifytool.RequiresHandle = false
+        movetool.RequiresHandle = false
+        local function createnotification(title, text)
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = title;
+        Text = text;
+        Duration = 1;
+        })
+        end
+        deletetool.Activated:Connect(function()
+        createnotification("Delete Tool", "You have deleted "..mouse.Target.Name)
+        table.insert(editedparts, mouse.Target)
+        table.insert(parentfix, mouse.Target.Parent)
+        table.insert(positionfix, mouse.Target.CFrame)
+        mouse.Target.Parent = nil
+        end)
+        undotool.Activated:Connect(function()
+        createnotification("Undo Tool", "You have undone "..editedparts[#editedparts].Name)
+        editedparts[#editedparts].Parent = parentfix[#parentfix]
+        editedparts[#editedparts].CFrame = positionfix[#positionfix]
+        table.remove(positionfix, #positionfix)
+        table.remove(editedparts, #editedparts)
+        table.remove(parentfix, #parentfix)
+        end)
+        identifytool.Activated:Connect(function()
+        createnotification("Identify Tool", "Instance: "..mouse.Target.ClassName.."\nName: "..mouse.Target.Name)
+        end)
+        movetool.Activated:Connect(function()
+        createnotification("Move Tool", "You are moving: "..mouse.Target.Name)
+        movingpart = mouse.Target
+        movedetect = true
+        movingpart.CanCollide = false
+        movetransparency = movingpart.Transparency
+        movingpart.Transparency = 0.5
+        mouse.TargetFilter = movingpart
+        table.insert(editedparts, movingpart)
+        table.insert(parentfix, movingpart.Parent)
+        table.insert(positionfix, movingpart.CFrame)
+        movingpart.Transparency = movingpart.Transparency / 2
+        repeat
+        mouse.Move:Wait()
+        movingpart.CFrame = CFrame.new(mouse.Hit.p)
+        until movedetect == false
+        end)
+        movetool.Deactivated:Connect(function()
+        createnotification("Move Tool", "You have stopped moving: "..mouse.Target.Name)
+        movingpart.CanCollide = true
+        movedetect = false
+        mouse.TargetFilter = nil
+        movingpart.Transparency = movetransparenc
+        end)
+  	end    
+})
+visualSection:AddButton({
+	Name = "ESP Highlight",
+	Callback = function()
+        local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Highlight = Instance.new("Highlight")
+Highlight.Name = "Highlight"
+function ApplyToCurrentPlayers()
+    for i,player in pairs(Players:GetChildren()) do 
+        repeat wait() until player.Character
+        if not player.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") then
+            local HighlightClone = Highlight:Clone()
+            HighlightClone.Adornee = player.Character
+            HighlightClone.Parent = player.Character:FindFirstChild("HumanoidRootPart")
+            HighlightClone.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            HighlightClone.Name = "Highlight"
+        end
+    end
+end    
+RunService.Heartbeat:Connect(function()
+    ApplyToCurrentPlayers()
+end)
+  	end    
+})
+apSection:AddButton({
+	Name = "L Spam",
+	Callback = function()
+game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("L","All")
+  	end    
+})
+
+   
+-- Toggles
+
+assassinSection:AddToggle({
+    Name = "Auto Pickup Candy",
+    Default = false,
+    Callback = function(Value)
+     
+       _G.autocandy = Value
+       autocandy()
+    end    
+    
+})
+
+
+
+
+
+
+
